@@ -1,0 +1,38 @@
+name: Microservices CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service:
+          - auth-service
+          - inventory-service
+          - notif-service
+          - api-gateway
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Run tests
+        working-directory: ./${{ matrix.service }}
+        run: mvn clean test
+
+      - name: Build JAR
+        working-directory: ./${{ matrix.service }}
+        run: mvn clean package -DskipTests

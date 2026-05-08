@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser; // Required for security
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -22,6 +23,7 @@ class ProductControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser(username = "admin") // Acts as a logged-in user
     void shouldCreateProduct() throws Exception {
         String productJson = """
             {
@@ -38,6 +40,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin") // Acts as a logged-in user
     void shouldGetAllProducts() throws Exception {
         mockMvc.perform(get("/products"))
                 .andExpect(status().isOk());

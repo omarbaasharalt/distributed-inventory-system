@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory | 4th Year Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --accent: #38bdf8;
+        }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .navbar { background-color: var(--card-bg); border-bottom: 1px solid #334155; }
+        .card { 
+            background-color: var(--card-bg); 
+            border: 1px solid #334155; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .table { color: var(--text-main); }
+        .table thead th { color: #94a3b8; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; border-bottom: 1px solid #334155; }
+        .table td { border-bottom: 1px solid #334155; padding: 1rem; }
+        .progress { height: 8px; border-radius: 10px; background-color: #334155; }
+        .badge-low { background-color: #ef4444; color: white; }
+        .badge-ok { background-color: #10b981; color: white; }
+        .btn-refresh { background-color: var(--accent); border: none; color: #0f172a; font-weight: 600; }
+        .btn-refresh:hover { background-color: #7dd3fc; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg py-3 mb-5">
+        <div class="container">
+            <span class="navbar-brand fw-bold text-white">
+                <span style="color: var(--accent);">📦</span> MICRO-STOCK OS
+            </span>
+            <div class="ms-auto d-none d-md-block">
+                <span class="badge bg-dark border border-secondary p-2">System Online: Port 8083</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-6">
+                <h1 class="h3 fw-bold mb-1">Stock Command Center</h1>
+                <p class="text-secondary small">Real-time distributed data from Inventory Service</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <button class="btn btn-refresh px-4 py-2 rounded-pill" onclick="location.reload()">Sync Data</button>
+            </div>
+        </div>
+
+        <div class="card p-0 overflow-hidden">
+            <table class="table table-borderless mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Product Details</th>
+                        <th>Location</th>
+                        <th>Stock Level</th>
+                        <th class="pe-4 text-end">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${products}">
+                        <td class="ps-4">
+                            <div class="fw-bold" th:text="${p.name}">Product</div>
+                            <div class="small text-secondary" th:text="'UID: ' + ${p.id}">#</div>
+                        </td>
+                        <td>
+                            <span class="text-secondary" th:text="${p.location}">Warehouse</span>
+                        </td>
+                        <td style="width: 250px;">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="progress flex-grow-1">
+                                    <div class="progress-bar" 
+                                         th:style="'width: ' + (${p.quantity} > 100 ? 100 : ${p.quantity}) + '%'"
+                                         th:classappend="${p.quantity < 5} ? 'bg-danger' : 'bg-info'"></div>
+                                </div>
+                                <span class="small fw-bold" th:text="${p.quantity}">0</span>
+                            </div>
+                        </td>
+                        <td class="pe-4 text-end">
+                            <span th:if="${p.quantity > 5}" class="badge badge-ok rounded-pill px-3 py-2">Healthy</span>
+                            <span th:if="${p.quantity <= 5}" class="badge badge-low rounded-pill px-3 py-2">Critical</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <p class="text-secondary" style="font-size: 0.8rem;">
+                Built by <span class="text-white">Omar</span> | Distributed Inventory System v1.0
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -18,6 +18,6 @@ public class WebController {
     @GetMapping("/")
     public String viewProducts(Model model) {
         model.addAttribute("products", productService.getAllProducts());
-        return "products";
+        return "index";
     }
 }

@@ -44,4 +44,11 @@ The system is composed of five distinct services, fully containerized using **Do
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/omarbaasharalt/distributed-inventory-system.git](https://github.com/omarbaasharalt/distributed-inventory-system.git)
+   git clone [https://github.com/omarbaasharalt/distributed-inventory-system.git]
+   (https://github.com/omarbaasharalt/distributed-inventory-system.git)
+
+      cd distributed-inventory-system
+
+      mvn clean package -DskipTests
+
+      docker compose up --build -d

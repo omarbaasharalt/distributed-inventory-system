@@ -3,6 +3,7 @@ package com.example.inventory_service.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "product")
 public class product {
 
     @Id
